@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class JobData {
 
-    private static final String DATA_FILE = "resources/job_data.csv";
+    private static final String DATA_FILE = "techjobs-console-java/resources/job_data.csv";
     private static Boolean isDataLoaded = false;
 
     private static ArrayList<HashMap<String, String>> allJobs;
@@ -70,14 +70,45 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
+        String valueLower = value.toLowerCase();
+
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
 
         for (HashMap<String, String> row : allJobs) {
 
             String aValue = row.get(column);
+            String aValueLower = aValue.toLowerCase();
 
-            if (aValue.contains(value)) {
+            if (aValueLower.contains(valueLower)) {
                 jobs.add(row);
+            }
+        }
+
+        return jobs;
+    }
+    /**
+     *
+     */
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+
+        // load data, if not already loaded
+        loadData();
+
+        String valueLower = value.toLowerCase();
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+
+        for (HashMap<String, String> row : allJobs) {
+
+            for (String x : row.keySet()) {
+
+                String aValue = row.get(x);
+                String aValueLower = aValue.toLowerCase();
+                if (aValueLower.contains(valueLower)) {
+
+                    jobs.add(row);
+                    break;
+                }
             }
         }
 
@@ -123,6 +154,9 @@ public class JobData {
             System.out.println("Failed to load job data");
             e.printStackTrace();
         }
+
+
+
     }
 
 }
